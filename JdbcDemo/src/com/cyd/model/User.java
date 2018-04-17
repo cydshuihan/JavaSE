@@ -118,4 +118,12 @@ public class User {
 		this.isdel = isdel;
 	}
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", user_name=" + user_name + ", age=" + age + ", sex=" + sex + ", email=" + email
+				+ ", mobile=" + mobile + ", birthday=" + birthday + ", create_user=" + create_user + ", update_user="
+				+ update_user + ", create_date=" + create_date + ", update_date=" + update_date + ", isdel=" + isdel
+				+ "]";
+	}
+
 }
