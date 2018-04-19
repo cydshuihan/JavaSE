@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.cyd.db.DBUtil;
 import com.cyd.model.User;
@@ -128,4 +129,121 @@ public class UserService {
 		return user;
 	}
 	
+	/**
+	 * 查询所有用户信息
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<User> getUserList() throws SQLException {
+		List<User> userList = new ArrayList<User>();
+		Connection conn = DBUtil.getConnection();
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from imooc_users");
+		PreparedStatement preStmt = conn.prepareStatement(sb.toString());
+		ResultSet res = preStmt.executeQuery();
+		
+		while(res.next()) {
+			User user = new User();
+			user.setUser_name(res.getString("user_name"));
+			user.setId(res.getInt("id"));
+			user.setAge(res.getInt("age"));
+			user.setSex(res.getInt("sex"));
+			user.setBirthday(res.getDate("birthday")); 
+			user.setUser_name(res.getString("user_name"));
+			//注意：通过数据库查询得到的java.sql.Date类型不需要回转为java.util.Date类型,因为sql的Date类型时util的Date类型的子集。
+			user.setEmail(res.getString("email"));
+			user.setMobile(res.getString("mobile"));
+			user.setCreate_date(res.getDate("create_date"));
+			user.setCreate_user(res.getString("create_user"));
+			user.setUpdate_date(res.getDate("update_date"));
+			user.setUpdate_user(res.getString("update_user"));
+			user.setIsdel(res.getInt("isdel"));
+			userList.add(user);
+		}
+		return userList;
+	}
+	
+	/**
+	 * 根据名字进行单个条件查询
+	 * @param name
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<User> getUserList(String name) throws SQLException {
+		List<User> userList = new ArrayList<User>();
+		Connection conn = DBUtil.getConnection();
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from imooc_users ");
+		sb.append(" where user_name = ? ");
+//		sb.append(" where user_name like ? ");
+		System.out.println(sb.toString());
+		PreparedStatement preStmt = conn.prepareStatement(sb.toString());
+		preStmt.setString(1, name);
+//		preStmt.setString(1, "%" + name + "%");
+		ResultSet res = preStmt.executeQuery();
+		
+		while(res.next()) {
+			User user = new User();
+			user.setUser_name(res.getString("user_name"));
+			user.setId(res.getInt("id"));
+			user.setAge(res.getInt("age"));
+			user.setSex(res.getInt("sex"));
+			user.setBirthday(res.getDate("birthday")); 
+			user.setUser_name(res.getString("user_name"));
+			//注意：通过数据库查询得到的java.sql.Date类型不需要回转为java.util.Date类型,因为sql的Date类型时util的Date类型的子集。
+			user.setEmail(res.getString("email"));
+			user.setMobile(res.getString("mobile"));
+			user.setCreate_date(res.getDate("create_date"));
+			user.setCreate_user(res.getString("create_user"));
+			user.setUpdate_date(res.getDate("update_date"));
+			user.setUpdate_user(res.getString("update_user"));
+			user.setIsdel(res.getInt("isdel"));
+			userList.add(user);
+		}
+		return userList;
+	}
+	
+	/**
+	 * 根据多个条件进行查询
+	 * @param params
+	 * 结构：[{"name":"user_name", "relation":"like", "value":"李明"},{"name":"email", "relation":"=", "value":"1234@126.com"}]
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<User> getUserList(List<Map<String, Object>> params) throws SQLException {
+		List<User> userList = new ArrayList<User>();
+		Connection conn = DBUtil.getConnection();
+		StringBuffer sb = new StringBuffer();
+		sb.append("select * from imooc_users where 1=1 "); //利用1=1来进行连接
+		
+		if (params != null && params.size() > 0) {
+			for (Map<String, Object> param : params) {
+				sb.append(" and " + param.get("name") + " "+ param.get("relation")
+				+ " " + param.get("value"));
+			}
+		}
+		System.out.println(sb.toString());
+		PreparedStatement preStmt = conn.prepareStatement(sb.toString());
+		ResultSet res = preStmt.executeQuery();
+		
+		while(res.next()) {
+			User user = new User();
+			user.setUser_name(res.getString("user_name"));
+			user.setId(res.getInt("id"));
+			user.setAge(res.getInt("age"));
+			user.setSex(res.getInt("sex"));
+			user.setBirthday(res.getDate("birthday")); 
+			user.setUser_name(res.getString("user_name"));
+			//注意：通过数据库查询得到的java.sql.Date类型不需要回转为java.util.Date类型,因为sql的Date类型时util的Date类型的子集。
+			user.setEmail(res.getString("email"));
+			user.setMobile(res.getString("mobile"));
+			user.setCreate_date(res.getDate("create_date"));
+			user.setCreate_user(res.getString("create_user"));
+			user.setUpdate_date(res.getDate("update_date"));
+			user.setUpdate_user(res.getString("update_user"));
+			user.setIsdel(res.getInt("isdel"));
+			userList.add(user);
+		}
+		return userList;
+	}
 }

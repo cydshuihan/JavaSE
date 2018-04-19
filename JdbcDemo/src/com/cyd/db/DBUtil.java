@@ -39,7 +39,7 @@ public class DBUtil {
 	}
 	
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		//加载驱动程序，利用反射机制，通过类名将这个类反向的加载到我们获得环境中
+		//加载驱动程序，利用反射机制，通过类名将这个类反向的加载到我们的环境中
 		Class.forName(DRIVER);
 		//获得数据库连接
 		Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
