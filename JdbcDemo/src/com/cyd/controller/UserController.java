@@ -60,7 +60,7 @@ public class UserController {
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("name", "email");
 		param.put("relation", "like");
-		param.put("value", "\'%qq.com%\'"); //注意这里不能缺了引号
+		param.put("value", "\'%qq.com%\'"); //注意这里不能缺了引号，直接拼接sql时条件值需带引号，select * from imooc_users where 1=1  and email like '%qq.com%'
 		params.add(param);
 		System.out.println("测试根据多个条件查询用户列表");
 		List<User> userList3 = userService.getUserList(params);

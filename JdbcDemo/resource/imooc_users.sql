@@ -33,4 +33,4 @@ CREATE TABLE `imooc_users` (
   `updae_date` date DEFAULT NULL,
   `isdel` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf32;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -11,7 +11,7 @@ import java.sql.Statement;
  * @author cyd
  *
  */
-public class DBUtil {
+public class DbUtil {
 	private static String DRIVER = "com.mysql.jdbc.Driver";
 	private static String URL = "jdbc:mysql://127.0.0.1:3306/imooc";
 	private static String USER = "root";
@@ -26,10 +26,8 @@ public class DBUtil {
 			// 获得数据库连接
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
