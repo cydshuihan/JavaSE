@@ -1,23 +1,24 @@
 package com.cyd.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cyd.dao.UserDao;
 import com.cyd.model.User;
-import com.cyd.service.UserService;
 
 /**
- * 控制层
+ * 控制层，测试用
  * @author cyd
  *
  */
 public class UserController {
 
 	public static void main(String[] args) throws Exception {
-		UserService userService = new UserService();
+		UserDao userService = new UserDao();
 		getUsers(userService);
 		
 		User user = userService.getUser(3);
@@ -60,8 +61,17 @@ public class UserController {
 		Map<String,Object> param = new HashMap<String,Object>();
 		param.put("name", "email");
 		param.put("relation", "like");
-		param.put("value", "\'%qq.com%\'"); //注意这里不能缺了引号，直接拼接sql时条件值需带引号，select * from imooc_users where 1=1  and email like '%qq.com%'
+//		param.put("value", "\'%qq.com%\'"); //注意这里不能缺了引号，直接拼接sql时条件值需带引号，select * from imooc_users where 1=1  and email like '%qq.com%'
+		param.put("value", "'%imooc.com%'"); // 不使用\转义也行
 		params.add(param);
+		
+		Map<String,Object> param2 = new HashMap<String,Object>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String date = sdf.format(new Date());
+		param2.put("name", "birthday");
+		param2.put("relation", "=");
+		param2.put("value", "'" + date + "'"); // 主要引号不能少
+		params.add(param2);
 		System.out.println("测试根据多个条件查询用户列表");
 		List<User> userList3 = userService.getUserList(params);
 		if (userList3 == null || userList3.isEmpty()) {
@@ -74,7 +84,7 @@ public class UserController {
 	}
 	
 	//查询数据表信息
-	public static void getUsers(UserService service) {
+	public static void getUsers(UserDao service) {
 		try {
 			List<User> usersList = service.getUsers();
 			for (User user : usersList) {
@@ -86,7 +96,7 @@ public class UserController {
 	}
 	
 	//添加用户信息
-	public static void addUser(UserService service) {
+	public static void addUser(UserDao service) {
 		User addUser = new User();
 		addUser.setUser_name("李明");
 		addUser.setAge(20);

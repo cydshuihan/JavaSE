@@ -1,4 +1,4 @@
-package com.cyd.service;
+package com.cyd.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,12 +14,12 @@ import com.cyd.db.DbUtil;
 import com.cyd.model.User;
 
 /**
- * User增刪改查业务逻辑
+ * DAO层
  * 
  * @author cyd
  *
  */
-public class UserService {
+public class UserDao {
 
 	public void addUser(User user) throws Exception {
 		Connection conn = DbUtil.getConnection();
