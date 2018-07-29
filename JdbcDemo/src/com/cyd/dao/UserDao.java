@@ -45,7 +45,11 @@ public class UserDao {
 //		preStmt.setDate(8, new Date(user.getCreate_date().getTime()));
 		preStmt.setString(8, user.getUpdate_user());
 //		preStmt.setDate(10, new Date(user.getUpdate_date().getTime()));
-		preStmt.setInt(9, user.getIsdel());
+		if(user.getIsdel() != null) {
+			preStmt.setInt(9, user.getIsdel());  // 若为null，直接设置会抛NullPointerException
+		} else {
+			preStmt.setInt(9, 1); // 未删除
+		}
 		
 		preStmt.execute();
 	}
@@ -79,7 +83,12 @@ public class UserDao {
 		preStmt.setInt(1, id);
 		preStmt.execute();
 	}
-
+	
+	/**
+	 * 获取用户基本信息
+	 * @return
+	 * @throws Exception
+	 */
 	public List<User> getUsers() throws Exception {
 		Connection conn = DbUtil.getConnection();
 		Statement stmt= conn.createStatement();
@@ -89,6 +98,7 @@ public class UserDao {
 		List<User> userList = new ArrayList<User>();
 		while (res.next()) {
 			User user = new User();
+			user.setId(res.getInt("id"));
 			user.setUser_name(res.getString("user_name"));
 			user.setAge(res.getInt("age"));
 			user.setEmail(res.getString("email"));
