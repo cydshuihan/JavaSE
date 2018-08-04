@@ -76,12 +76,14 @@ public class UserDao {
 
 	public void deleteUser(Integer id) throws SQLException {
 		Connection conn = DbUtil.getConnection();
-		String sql = " delete from imooc_users " + 
-				" where id=?"; //加空格
-		PreparedStatement preStmt = conn.prepareStatement(sql);
-		//将参数通过对象传入
-		preStmt.setInt(1, id);
-		preStmt.execute();
+		String sql1 = " delete from imooc_users " + 
+				" where id=" + id; //加空格
+		String sql2 = " ALTER TABLE imooc_users AUTO_INCREMENT = 1";
+		Statement stmt = conn.createStatement();
+		stmt.addBatch(sql1);
+		stmt.addBatch(sql2);
+		stmt.executeBatch();
+		stmt.clearBatch(); // 清空缓存
 	}
 	
 	/**
@@ -251,6 +253,9 @@ public class UserDao {
 			user.setUpdate_user(res.getString("update_user"));
 			user.setIsdel(res.getInt("isdel"));
 			userList.add(user);
+		}
+		if(userList.isEmpty()) {
+			System.out.println("根据条件未找到对应用户");
 		}
 		return userList;
 	}
